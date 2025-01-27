@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>htmx</title>
+</head>
+<body>
+    <h1>Index Page</h1>
+    
+    <div hx-get="{% url 'element1' %}" hx-trigger='load'> 
+        <p> loading... </p>
+    </div>
+    <div hx-get="{% url 'element2' %}" hx-trigger='load'> 
+        <p> loading... </p>
+    </div>
+
+</body>
+      <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</html>
