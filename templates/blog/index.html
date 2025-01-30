@@ -12,27 +12,30 @@
 
         <title>HTMX and Template Partials Demo</title>
     </head>
-    <body>
+    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         <div class="container mt-5">
             {% for blog_entry in blog_posts %} 
             {% if forloop.counter|divisibleby:"2" %}
             <div class="row">
             {% endif %}
-                <div class="col-md-6">
-                    <div class="card d-flex flex-row justify-content-between align-items-center mt-3 p-3">
+                <div>
+                    <div id="blog-post-{{ blog_entry.id }}" class="card d-flex flex-row justify-content-between align-items-center mt-3 p-3">
                     <div>{{ blog_entry.title }}</div>
                         {% if blog_entry.ia_archived %}
-                            <a
-                                href="{% url 'blog_restore' blog_entry.id %}"
-                                class="btn btn-success"
-                                >Restore</a
-                            >
+                            <button hx-post="{% url 'blog_restore' blog_entry.id %}"
+                                hx-select="#blog-post-{{ blog_entry.id }} button"
+                                hx-swap="outerHTML"
+                                class="toggle-btn btn btn-success">
+                                    Restore
+                            </button>
                         {% else %}
-                            <a
-                                href="{% url 'blog_archive' blog_entry.id %}"
-                                class="btn btn-danger"
-                                >Archive</a
-                            >
+                            <button
+                                hx-post="{% url 'blog_archive' blog_entry.id %}"
+                                hx-select="#blog-post-{{ blog_entry.id }} button"
+                                hx-swap="outerHTML"
+                                class="toggle-btn btn btn-danger">
+                                    Archive
+                            </button>
                         {% endif %}
                     </div>
                 </div>
@@ -42,4 +45,5 @@
             {% endfor %}
         </div>
     </body>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script> 
 </html>
