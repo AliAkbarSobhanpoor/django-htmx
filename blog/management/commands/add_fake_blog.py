@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
-from htmx.models import Blog
+from blog.models import Post
 from django.contrib.auth import get_user_model
 from faker import Faker
+import random
 
 class Command(BaseCommand):
     help = "Add 100 blog posts to the database"
@@ -17,12 +18,12 @@ class Command(BaseCommand):
         blogs = []
         for i in range(100):
             blogs.append(
-                Blog(
-                    user=user,
+                Post(
                     title=fake.sentence(),
-                    content=fake.paragraph(nb_sentences=5),
+                    context=fake.paragraph(nb_sentences=5),
+                    ia_archived=bool(random.randint(0,1))
                 )
             )
 
-        Blog.objects.bulk_create(blogs)
+        Post.objects.bulk_create(blogs)
         self.stdout.write(self.style.SUCCESS("100 blog posts added successfully!"))
